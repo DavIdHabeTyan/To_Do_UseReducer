@@ -39,10 +39,12 @@ function reducer(state, action) {
             const {payload: {id}} = action;
             return {...state, todos: state.todos.filter(todo => todo.id !== id)};
         }
-
         case ACTIONS.EDIT_TODO: {
             const {id, title} = action.payload;
             return {...state, editeMOde: {todoId: id, editTodo: title}}
+        }
+        case ACTIONS.SET_DONE: {
+
         }
 
     }
