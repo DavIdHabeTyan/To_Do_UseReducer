@@ -8,9 +8,9 @@ const initialState = {
     input: "",
     todos: [],
     editeMode: {
-        editTodo: "",
         todoId: "",
-        isEditMOde: false,
+        isEditMode: false,
+        editTodo: "",
     }
 }
 
@@ -30,29 +30,29 @@ function reducer(state, action) {
                     {id: Math.random(), title: state.input, isDone: false, isCompleted: false}
                 ]
             };
-
         }
         case ACTIONS.UPDATE_INPUT: {
             return {...state, input: action.payload.inputValue}
         }
-        case ACTIONS.DELETE_TODO: {
-            const {payload: {id}} = action;
-            return {...state, todos: state.todos.filter(todo => todo.id !== id)};
-        }
-        case ACTIONS.EDIT_TODO: {
-            const {id, title} = action.payload;
-            return {...state, editeMOde: {todoId: id, editTodo: title}}
-        }
+        // case ACTIONS.DELETE_TODO: {
+        //     const {payload: {id}} = action;
+        //     return {...state, todos: state.todos.filter(todo => todo.id !== id)};
+        // }
         case ACTIONS.SET_DONE: {
-
+            const { id } = action.payload;
+            return {...state, todos: state.todos.map(todo => {
+                if(todo.id === id) {
+                    todo.isDone = !todo.isDone
+                }
+                return todo
+                })}
         }
-
+        default: return state;
     }
 }
 
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState)
-
     function handleAdTodo() {
         dispatch({
             type: ACTIONS.ADD_TODO,
@@ -70,6 +70,13 @@ function App() {
         e.stopPropagation()
         dispatch({
             type: ACTIONS.DELETE_TODO,
+            payload: { id }
+        })
+    }
+
+    function onDone( id) {
+        dispatch({
+            type: ACTIONS.SET_DONE,
             payload: {id}
         })
     }
@@ -86,6 +93,7 @@ function App() {
                 {state.todos.map(todo => <Todo
                     editeMode={state.editeMode}
                     key={todo.id}
+                    onDone={onDone}
                     {...todo}
 
                     handleDeleteTodo={handleDeleteTodo}
