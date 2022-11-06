@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Todo = (props) => {
-    const {id,  title, isDone, handleDeleteTodo, onDone} = props
+const Todo = ({id, title, isDone, deleteTodo, dispatch,}) => {
 
     return (
-        <div  onClick={ () => onDone(id)}  className={isDone ? "todos" : ""}>
-                    <span> {title}</span>
-                    <button onClick={ (e) =>handleDeleteTodo(e, id)}>Delete</button>
+        <div>
+            <span className={isDone ? "isDone" : ""} onClick={() => dispatch({type: "SET_DONE", payload:{id}})}>{title}</span>
+
+            <button onClick={() => deleteTodo(id)}>Delete</button>
         </div>
     );
 };

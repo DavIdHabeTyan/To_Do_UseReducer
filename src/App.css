@@ -1,0 +1,8 @@
+.todo{
+    text-align: center;
+}
+
+.isDone{
+
+    text-decoration: line-through;
+}
